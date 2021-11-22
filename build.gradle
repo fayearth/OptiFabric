@@ -27,21 +27,6 @@ group = project.maven_group
 
 repositories {
 	mavenCentral()
-	maven {
-		name "Modmuss50 Repository"
-		url 'https://maven.fabricmc.net/'
-	}
-	maven { url 'https://maven.shedaniel.me/' }
-	maven {
-		name = "Clothesline"
-		url 'https://maven.jamieswhiteshirt.com/libs-release/'
-	}
-	maven { url 'https://maven.blamejared.com' }
-	maven { url 'https://modmaven.dev/artifactory/local-releases/' }
-	maven { url 'https://mod-buildcraft.com/maven' }
-	maven { url 'https://maven.dblsaiko.net' }
-	maven { url 'https://maven.kotlindiscord.com/repository/terraformers/' } //Formerly https://maven.terraformersmc.com
-	maven { url 'https://www.cursemaven.com' }
 	maven { url 'https://jitpack.io' }
 }
 
@@ -54,74 +39,6 @@ dependencies {
 
 	modImplementation "com.github.Chocohead:Fabric-ASM:${project.fabric_asm_version}"
 	include "com.github.Chocohead:Fabric-ASM:${project.fabric_asm_version}"
-
-	modRuntime("me.shedaniel:RoughlyEnoughItems:5.12.248") {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime("RebornCore:RebornCore-1.16:4.7.3+build.136") {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime("TechReborn:TechReborn-1.16:3.8.4+build.236") {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-		exclude(group: "RebornCore") //TR depends purely on the newest version
-	}
-	modRuntime("com.jamieswhiteshirt:clothesline-fabric:0.3.0+1.16.3") {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime 'curse.maven:trumpet-skeleton-fabric-330417:3033242'
-	modRuntime ("vazkii.patchouli:Patchouli:1.16-40-FABRIC") {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime 'curse.maven:malilib-303119:3252979'
-	modRuntime 'curse.maven:watson-361509:3334272'
-	modRuntime 'net.earthcomputer.multiconnect:multiconnect-api:1.4.12'
-	modRuntime 'net.earthcomputer.multiconnect:multiconnect-slim:1.4.12'
-	modRuntime 'curse.maven:now-playing-398652:3041887'
-	modRuntime ('com.github.apace100:origins-fabric:0.7.3') {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime 'curse.maven:staff-of-building-382694:3284852'
-	modRuntime ('me.shedaniel.cloth.api:cloth-dynamic-registry-api-v1:1.5.50') {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime 'curse.maven:sandwichable-374143:3206686'
-	modRuntime ('appeng:appliedenergistics2-fabric:8.1.0-alpha.9') {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime ('net.fabricmc:fabric-language-kotlin:1.6.3+kotlin.1.5.21') {
-		exclude(group: "net.fabricmc")
-	}
-	modRuntime ('net.dblsaiko:hctm-base:3.6.2') {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime ('com.github.DawnTeamMC:DawnAPI:1.8') {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime ('com.github.DawnTeamMC:Mubble:v4.0-pre9') {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime ('com.github.user11681:smartentrypoints:master-SNAPSHOT') {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime ('com.github.user11681:phormat:77f017e') {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	modRuntime 'curse.maven:chat-heads-407206:3177320'
-	modRuntime 'curse.maven:trinkets-fabric-341284:3100959'
-	modRuntime 'curse.maven:images-400123:3148061'
 }
 
 compileJava {
@@ -131,6 +48,8 @@ compileJava {
 		method 'net/optifine/reflect/ReflectorForge', '(Lnet/minecraft/item/ItemStack;)Z', 'isItemDamaged', 'isItemDamaged'
 		method 'net/minecraft/client/particle/ParticleManager', '(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;' +
 		'Lnet/minecraft/client/render/LightmapTextureManager;Lnet/minecraft/client/render/Camera;FLnet/minecraft/client/render/Frustum;)V', 'renderParticles', 'renderParticles'
+		method 'net/minecraft/client/particle/ParticleManager', '(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;' +
+		'Lnet/minecraft/client/render/LightmapTextureManager;Lnet/minecraft/client/render/Camera;FLnet/minecraft/client/render/Frustum;)V', 'render', 'render'
 		method 'net/optifine/BlockPosM', '(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;)Ljava/lang/Iterable;', 'getAllInBoxMutable', 'getAllInBoxMutable'
 		method 'net/minecraft/network/PacketByteBuf', '(Lnet/minecraft/item/ItemStack;Z)Lnet/minecraft/network/PacketByteBuf;', 'writeItemStack', 'writeItemStack'
 		it.class 'net/minecraft/world/HeightLimitView', 'net/minecraft/class_5539'
