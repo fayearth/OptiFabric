@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipError;
+import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
@@ -17,6 +19,10 @@ import org.apache.commons.io.IOUtils;
 public class ZipUtils {
 	public interface ZipTransformer {
 		InputStream apply(ZipFile zip, ZipEntry entry) throws IOException;
+
+		default String mapName(ZipEntry entry) {
+			return entry.getName();
+		}
 	}
 
 	public interface ZipVisitor extends ZipTransformer {
@@ -26,6 +32,24 @@ public class ZipUtils {
 		}
 
 		boolean visit(ZipFile zip, ZipEntry entry) throws IOException;
+	}
+
+	/**
+	 * Test if the given zip file can be read with {@link ZipFile} (and thus is likely a valid zip)
+	 *
+	 * @param zip The zip file to test the validity of
+	 * @return Whether the given zip can be read with {@link ZipFile}
+	 *
+	 * @throws IOException If an unrelated error occurs trying to read the file
+	 */
+	public static boolean isValid(File zip) throws IOException {
+		try {
+			new ZipFile(zip).close();
+
+			return true;
+		} catch (ZipException | ZipError e) {
+			return false;
+		}
 	}
 
 	/**
@@ -121,7 +145,7 @@ public class ZipUtils {
 			tempZip = File.createTempFile("optifabric", ".zip");
 
 			transform(zip, ZipFile.OPEN_READ | ZipFile.OPEN_DELETE, transformer, tempZip);
-			zip.delete(); //Make sure it's definitely out of the way
+			if (zip.exists() && !zip.delete()) throw new IllegalStateException("Failed to clear " + zip); //Make sure it's definitely out of the way
 
 			FileUtils.moveFile(tempZip, zip);
 		} catch (IOException e) {
@@ -140,7 +164,7 @@ public class ZipUtils {
 
 				try (InputStream in = transformer.apply(origin, entry)) {
 					if (in != null) {
-						out.putNextEntry(pure ? new ZipEntry(entry) : new ZipEntry(entry.getName()));
+						out.putNextEntry(pure ? new ZipEntry(entry) : new ZipEntry(transformer.mapName(entry)));
 						IOUtils.copy(in, out);
 					}
 				}
