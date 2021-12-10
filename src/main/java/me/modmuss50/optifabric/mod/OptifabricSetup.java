@@ -123,6 +123,10 @@ public class OptifabricSetup implements Runnable {
 
 		if (isPresent("fabric-rendering-data-attachment-v1")) {
 			Mixins.addConfiguration("optifabric.compat.fabric-rendering-data.mixins.json");
+
+			if (isPresent("minecraft", "=1.18-beta.1")) {
+				Mixins.addConfiguration("optifabric.compat.fabric-rendering-data.extra-mixins.json");
+			}
 		}
 
 		if (isPresent("fabric-renderer-indigo")) {
@@ -141,7 +145,7 @@ public class OptifabricSetup implements Runnable {
 			});
 		}
 
-		if (isPresent("fabric-item-api-v1", ">=1.1.0") && !isPresent("minecraft", "1.17.x")) {
+		if (isPresent("fabric-item-api-v1", ">=1.1.0") && isPresent("minecraft", "1.16.x")) {
 			Mixins.addConfiguration("optifabric.compat.fabric-item-api.mixins.json");
 		}
 
@@ -156,6 +160,10 @@ public class OptifabricSetup implements Runnable {
 				Mixins.addConfiguration("optifabric.compat.fabric-screen-api.mixins.json");
 			}
 			usingScreenAPI = true;
+		}
+
+		if (isPresent("fabric-lifecycle-events-v1", ">=1.4.6") && isPresent("minecraft", "1.17.x")) {
+			Mixins.addConfiguration("optifabric.compat.fabric-lifecycle-events.mixins.json");
 		}
 
 		Mixins.addConfiguration("optifabric.optifine.mixins.json");
